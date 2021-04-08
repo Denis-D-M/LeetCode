@@ -1,20 +1,32 @@
 package com.leetcode;
 
-import java.util.stream.Stream;
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int target = getNum(l1) + getNum(l2);
+        StringBuilder builder = new StringBuilder();
+        builder.append(target);
+        char[] chars = new char[builder.length()];
+        builder.getChars(0, builder.length(), chars, 0);
 
-public class Solution {
-    public static void main(String[] args) {
-        System.out.println(romanToInt("123dadas"));
+        ListNode parentNode = new ListNode();
+
+        for (int i = 0; i < chars.length; i++){
+            parentNode.next = new ListNode();
+            parentNode.val = Integer.parseInt(String.valueOf(chars[i]));
+            parentNode = parentNode.next;
+        }
+        return parentNode;
     }
 
-    public static int romanToInt(String s) {
-        Stream.of(s).
-                map(str -> str.replaceAll("[IV]", "4"))
-                .map(str -> str.replaceAll("[IX]]", "9"))
-                .map(str -> str.replaceAll("[XL]]", "40"))
-                .map(str -> str.replaceAll("[XC]]", "90"))
-                .map(str -> str.replaceAll("[CD]]", "90"))
-                .map(str -> str.replaceAll("[CM]]", "90"))
-                .toString();
+    public int getNum(ListNode node){
+        ListNode myNode = node;
+        StringBuilder builder = new StringBuilder();
+        while (true){
+            builder.append(myNode.val);
+            if (myNode.next == null) break;
+            myNode =  myNode.next;
+        }
+        builder.reverse();
+        return Integer.parseInt(builder.toString());
     }
 }
