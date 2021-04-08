@@ -2,27 +2,32 @@ package com.leetcode;
 
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int target = getNum(l1) + getNum(l2);
         ListNode myNode = new ListNode();
         ListNode finalNode = myNode;
-        while(true){
-            myNode.val = target % 10;
-            target /= 10;
-            if (target == 0) break;
-            myNode.next = new ListNode();
-            myNode = myNode.next;
-        }
-        return finalNode;
-    }
+        int rest = 0;
+        boolean create = false;
+        while(true) {
+            myNode.val = (l1.val + l2.val + rest) % 10;
+            rest = (l1.val + l2.val) / 10;
+            l1.val = 0;
+            if (l1.next != null) {
+                l1 = l1.next;
+                create = true;
+            }
+            l2.val = 0;
+            if (l2.next != null) {
+                l2 = l2.next;
+                create = true;
+            }
+            if (create) {
+                myNode.next = new ListNode();
+                myNode = myNode.next;
+            }
+            if (l1.next == null && l2.next == null) break;
 
-    public int getNum(ListNode node){
-        StringBuilder builder = new StringBuilder();
-        while (true){
-            builder.append(node.val);
-            if (node.next == null) break;
-            node =  node.next;
+
         }
-        builder.reverse();
-        return Integer.parseInt(builder.toString());
+        myNode.val = (l1.val + l2.val + rest) % 10;
+        return finalNode;
     }
 }
